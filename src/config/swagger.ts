@@ -1,0 +1,82 @@
+import swaggerJSDoc from "swagger-jsdoc";
+import dotenv from "dotenv";
+
+dotenv.config({ quiet: true });
+
+const PORT = process.env.PORT || 3000;
+const API_NAME = process.env.API_NAME || "api";
+const API_VERSION = process.env.API_VERSION || "v1";
+const BASE_PATH = `/${API_NAME}/${API_VERSION}`;
+const serverUrl = process.env.SWAGGER_SERVER_URL;
+const serverDesc = process.env.SWAGGER_SERVER_DESC;
+
+const servers = [
+  {
+    url: `http://localhost:${PORT}${BASE_PATH}`,
+    description: "Development server",
+  },
+  ...(serverUrl
+    ? [
+        {
+          url: serverUrl,
+          description: serverDesc || "Custom server",
+        },
+      ]
+    : []),
+];
+
+const options: swaggerJSDoc.Options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Guork API",
+      version: "1.0.0",
+      description: "API documentation for Guork Backend",
+    },
+    servers,
+    tags: [
+      {
+        name: "Auth",
+        description: "Authentication operations",
+      },
+      {
+        name: "Users",
+        description: "User management operations",
+      },
+    ],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+      schemas: {
+        User: {
+          $ref: "../modules/users/schemas/usersSwaggerSchema.yml#/User",
+        },
+        CreateUser: {
+          $ref: "../modules/users/schemas/usersSwaggerSchema.yml#/CreateUser",
+        },
+        UpdateUser: {
+          $ref: "../modules/users/schemas/usersSwaggerSchema.yml#/UpdateUser",
+        },
+        Login: {
+          $ref: "../modules/auth/schemas/authSwaggerSchema.yml#/Login",
+        },
+        AuthResponse: {
+          $ref: "../modules/auth/schemas/authSwaggerSchema.yml#/AuthResponse",
+        },
+      },
+    },
+  },
+  apis: ["src/modules/auth/*.ts", "src/modules/users/*.ts"],
+};
+
+export const swaggerSpecs = swaggerJSDoc(options);

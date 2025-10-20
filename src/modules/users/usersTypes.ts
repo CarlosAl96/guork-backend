@@ -1,15 +1,15 @@
 export interface UserAttributes {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
   phone?: string;
-  password: string;
-  role: "user" | "admin";
+  password?: string;
+  role?: "user" | "admin";
   dniImg?: string;
-  dni: string;
-  birthdate: Date;
-  address: string;
+  dni?: string;
+  birthdate?: Date;
+  address?: string;
   postalCode?: string;
   profileImg?: string;
   createdAt?: Date;

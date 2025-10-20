@@ -4,7 +4,7 @@ import { UserRepository } from "../users/usersRepository";
 import { AuthRepository } from "./authRepository";
 import { CreateUserInput } from "../users/schemas/usersZodSchema";
 import { LoginInput } from "./schemas/authZodSchema";
-import { UserResponse } from "../users/usersTypes";
+import { UserCreationAttributes, UserResponse } from "../users/usersTypes";
 
 export class AuthService {
   private userRepository: UserRepository;
@@ -20,7 +20,10 @@ export class AuthService {
     return userResponse;
   }
 
-  async register(data: CreateUserInput, ip: string): Promise<{ user: UserResponse; token: string }> {
+  async register(
+    data: CreateUserInput,
+    ip: string
+  ): Promise<{ user: UserResponse; token: string }> {
     // Verificar si el email ya existe
     const existingEmail = await this.userRepository.findByEmail(data.email);
     if (existingEmail) {
@@ -28,20 +31,32 @@ export class AuthService {
     }
 
     // Verificar si el DNI ya existe
-    const existingDni = await this.userRepository.findByDni(data.dni);
-    if (existingDni) {
-      throw new Error("DNI already exists");
+    if (data.dni) {
+      const existingDni = await this.userRepository.findByDni(data.dni);
+      if (existingDni) {
+        throw new Error("DNI already exists");
+      }
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    let hashedPassword;
+    const userData: UserCreationAttributes = { ...data, birthdate: undefined };
+
+    if (data.password) {
+      hashedPassword = await bcrypt.hash(data.password, 10);
+      userData.password = hashedPassword;
+    }
+
+    if (data.birthdate) {
+      userData.birthdate = new Date(data.birthdate);
+    } else {
+      delete userData.birthdate;
+    }
 
     // Crear usuario
     const user = await this.userRepository.create({
-      ...data,
-      password: hashedPassword,
+      ...userData,
       role: data.role || "user",
-      birthdate: new Date(data.birthdate),
     });
 
     // Generar token
@@ -58,7 +73,10 @@ export class AuthService {
     };
   }
 
-  async login(data: LoginInput, ip: string): Promise<{ user: UserResponse; token: string }> {
+  async login(
+    data: LoginInput,
+    ip: string
+  ): Promise<{ user: UserResponse; token: string }> {
     // Buscar usuario
     const user = await this.userRepository.findByEmail(data.email);
     if (!user) {
@@ -66,7 +84,7 @@ export class AuthService {
     }
 
     // Verificar password
-    const isValid = await bcrypt.compare(data.password, user.password);
+    const isValid = await bcrypt.compare(data.password, user.password || "");
     if (!isValid) {
       throw new Error("Invalid credentials");
     }

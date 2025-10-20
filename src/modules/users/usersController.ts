@@ -78,7 +78,7 @@ export class UserController {
     try {
       const { id } = req.params;
       await this.userService.deleteUser(id);
-      res.status(204).send();
+      res.status(200).json({ message: "User deleted successfully" });
     } catch (error) {
       if (error instanceof Error) {
         res.status(404).json({ message: error.message });

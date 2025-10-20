@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import { UserRepository } from "./usersRepository";
 import { CreateUserInput, UpdateUserInput } from "./schemas/usersZodSchema";
-import { UserResponse } from "./usersTypes";
+import { UserCreationAttributes, UserResponse } from "./usersTypes";
+import { de } from "zod/v4/locales";
 
 export class UserService {
   private userRepository: UserRepository;
@@ -23,20 +24,31 @@ export class UserService {
     }
 
     // Verificar si el DNI ya existe
-    const existingDni = await this.userRepository.findByDni(data.dni);
-    if (existingDni) {
-      throw new Error("DNI already exists");
+    if (data.dni) {
+      const existingDni = await this.userRepository.findByDni(data.dni);
+      if (existingDni) {
+        throw new Error("DNI already exists");
+      }
     }
 
+    let hashedPassword;
+    const userData: UserCreationAttributes = { ...data, birthdate: undefined };
     // Hash password
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    if (data.password) {
+      hashedPassword = await bcrypt.hash(data.password, 10);
+      userData.password = hashedPassword;
+    }
+
+    if (data.birthdate) {
+      userData.birthdate = new Date(data.birthdate);
+    } else {
+      delete userData.birthdate;
+    }
 
     // Crear usuario
     const user = await this.userRepository.create({
-      ...data,
-      password: hashedPassword,
-      role: data.role || "user",
-      birthdate: new Date(data.birthdate),
+      ...userData,
+      role: userData.role || "user",
     });
 
     return this.userToResponse(user);

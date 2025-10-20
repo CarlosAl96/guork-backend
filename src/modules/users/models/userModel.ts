@@ -16,11 +16,11 @@ export default class UserModel extends Model {
   @Column({ type: DataType.UUID, defaultValue: UUIDV4, allowNull: false })
   id!: string;
 
-  @Column({ type: DataType.TEXT, allowNull: false, field: "first_name" })
-  firstName!: string;
+  @Column({ type: DataType.TEXT, allowNull: true, field: "first_name" })
+  firstName?: string;
 
-  @Column({ type: DataType.TEXT, allowNull: false, field: "last_name" })
-  lastName!: string;
+  @Column({ type: DataType.TEXT, allowNull: true, field: "last_name" })
+  lastName?: string;
 
   @Column({ type: DataType.TEXT, allowNull: false, unique: true })
   email!: string;
@@ -28,23 +28,23 @@ export default class UserModel extends Model {
   @Column({ type: DataType.TEXT, allowNull: true })
   phone?: string;
 
-  @Column({ type: DataType.TEXT, allowNull: false })
-  password!: string;
+  @Column({ type: DataType.TEXT, allowNull: true })
+  password?: string;
 
-  @Column({ type: DataType.TEXT, allowNull: false, defaultValue: "user" })
-  role!: string;
+  @Column({ type: DataType.TEXT, allowNull: true, defaultValue: "user" })
+  role?: string;
 
   @Column({ type: DataType.TEXT, allowNull: true, field: "dni_img" })
   dniImg?: string;
 
-  @Column({ type: DataType.TEXT, allowNull: false, unique: true })
-  dni!: string;
+  @Column({ type: DataType.TEXT, allowNull: true, unique: true })
+  dni?: string;
 
-  @Column({ type: DataType.DATE, allowNull: false })
-  birthdate!: Date;
+  @Column({ type: DataType.DATE, allowNull: true })
+  birthdate?: Date;
 
-  @Column({ type: DataType.TEXT, allowNull: false })
-  address!: string;
+  @Column({ type: DataType.TEXT, allowNull: true })
+  address?: string;
 
   @Column({ type: DataType.TEXT, allowNull: true, field: "postal_code" })
   postalCode?: string;
@@ -57,6 +57,7 @@ export default class UserModel extends Model {
 
   @HasMany(() => PasswordResetRequestModel)
   passwordResetRequests!: PasswordResetRequestModel[];
+
   @Column({
     type: DataType.DATE,
     allowNull: false,

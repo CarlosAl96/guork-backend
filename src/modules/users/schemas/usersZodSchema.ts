@@ -2,14 +2,14 @@ import { z } from "zod";
 
 // Schema de validación para creación de usuario
 export const createUserSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
+  firstName: z.string().min(1).optional(),
+  lastName: z.string().min(1).optional(),
   email: z.string().email("Invalid email format"),
   phone: z.string().optional(),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  dni: z.string().min(1, "DNI is required"),
-  birthdate: z.string().min(1, "Birthdate is required"),
-  address: z.string().min(1, "Address is required"),
+  password: z.string().min(6).optional(),
+  dni: z.string().min(1).optional(),
+  birthdate: z.string().min(1).optional(),
+  address: z.string().min(1).optional(),
   postalCode: z.string().optional(),
   dniImg: z.string().optional(),
   profileImg: z.string().optional(),

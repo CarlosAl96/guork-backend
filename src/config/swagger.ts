@@ -43,6 +43,10 @@ const options: swaggerJSDoc.Options = {
         name: "Users",
         description: "User management operations",
       },
+      {
+        name: "Profiles",
+        description: "Profiles management operations",
+      },
     ],
     security: [
       {
@@ -73,10 +77,19 @@ const options: swaggerJSDoc.Options = {
         AuthResponse: {
           $ref: "../modules/auth/schemas/authSwaggerSchema.yml#/AuthResponse",
         },
+        Profile: {
+          $ref: "../modules/profiles/schemas/profilesSwaggerSchema.yml#/Profile",
+        },
+        CreateProfile: {
+          $ref: "../modules/profiles/schemas/profilesSwaggerSchema.yml#/CreateProfile",
+        },
+        UpdateProfile: {
+          $ref: "../modules/profiles/schemas/profilesSwaggerSchema.yml#/UpdateProfile",
+        },
       },
     },
   },
-  apis: ["src/modules/auth/*.ts", "src/modules/users/*.ts"],
+  apis: ["src/modules/auth/*.ts", "src/modules/users/*.ts", "src/modules/profiles/*.ts"],
 };
 
 export const swaggerSpecs = swaggerJSDoc(options);

@@ -5,6 +5,7 @@ import swaggerUi from "swagger-ui-express";
 import sequelize from "./config/database";
 import { swaggerSpecs } from "./config/swagger";
 import usersRoutes from "./modules/users/usersRoutes";
+import profilesRoutes from "./modules/profiles/profilesRoutes";
 import authRoutes from "./modules/auth/authRoutes";
 
 dotenv.config({ quiet: true });
@@ -30,6 +31,7 @@ app.get("/health", (req, res) => {
 // API Routes
 app.use(`${BASE_PATH}/auth`, authRoutes);
 app.use(`${BASE_PATH}/users`, usersRoutes);
+app.use(`${BASE_PATH}/profiles`, profilesRoutes);
 
 // Initialize database
 const startServer = async () => {

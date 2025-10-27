@@ -1,11 +1,11 @@
-export interface UserAttributes {
+export interface User {
   id: string;
   firstName?: string;
   lastName?: string;
   email: string;
   phone?: string;
   password?: string;
-  role?: "user" | "admin";
+  role?: "user" | "admin" | "expert";
   dniImg?: string;
   dni?: string;
   birthdate?: Date;
@@ -16,8 +16,8 @@ export interface UserAttributes {
   updatedAt?: Date;
 }
 
-export interface UserCreationAttributes
-  extends Omit<UserAttributes, "id" | "createdAt" | "updatedAt"> {}
+export interface UserCreation
+  extends Omit<User, "id" | "createdAt" | "updatedAt"> {}
 
 export interface UserResponse
-  extends Omit<UserAttributes, "password" | "createdAt" | "updatedAt"> {}
+  extends Omit<User, "password" | "createdAt" | "updatedAt"> {}

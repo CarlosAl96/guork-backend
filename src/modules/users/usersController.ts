@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { UserService } from "./usersService";
 import { createUserSchema, updateUserSchema } from "./schemas/usersZodSchema";
 import { ZodError } from "zod";
+import { PaginationRequest } from "../../shared/types/paginationRequest";
+import { PaginationResponse } from "../../shared/types/paginationResponse";
+import { UserResponse } from "./usersTypes";
 
 export class UserController {
   private userService: UserService;
@@ -30,8 +33,18 @@ export class UserController {
 
   getAllUsers = async (req: Request, res: Response): Promise<void> => {
     try {
-      const users = await this.userService.getAllUsers();
-      res.status(200).json(users);
+      const pagination: PaginationRequest = {
+        page: Number.parseInt((req.query.page as string) || "1", 10),
+        pageSize: Number.parseInt((req.query.pageSize as string) || "10", 10),
+        sortBy: (req.query.sortBy as string) || undefined,
+        sortOrder: req.query.sortOrder as string as "asc" | "desc" | undefined,
+        search: (req.query.search as string) || undefined,
+        role: (req.query.role as string) || undefined,
+      };
+
+      const result: PaginationResponse<UserResponse> =
+        await this.userService.getAllUsers(pagination);
+      res.status(200).json(result);
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ message: error.message });

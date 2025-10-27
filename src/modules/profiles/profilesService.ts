@@ -1,6 +1,11 @@
 import { ProfilesRepository } from "./profilesRepository";
-import { CreateProfileInput, UpdateProfileInput } from "./schemas/profilesZodSchema";
-import { ProfileResponse } from "./profilesTypes";
+import {
+  CreateProfileInput,
+  UpdateProfileInput,
+} from "./schemas/profilesZodSchema";
+import { Profile } from "./profilesTypes";
+import { PaginationRequest } from "../../shared/types/paginationRequest";
+import { PaginationResponse } from "../../shared/types/paginationResponse";
 
 export class ProfilesService {
   private profilesRepository: ProfilesRepository;
@@ -9,38 +14,46 @@ export class ProfilesService {
     this.profilesRepository = new ProfilesRepository();
   }
 
-  private profileToResponse(profile: any): ProfileResponse {
-    const { createdAt, updatedAt, ...profileResponse } = profile.toJSON();
-    return profileResponse;
-  }
-
-  async createProfile(data: CreateProfileInput): Promise<ProfileResponse> {
+  async createProfile(data: CreateProfileInput): Promise<Profile> {
     const profile = await this.profilesRepository.create({
       ...data,
       status: data.status || "available",
     });
-    return this.profileToResponse(profile);
+    return profile;
   }
 
-  async getAllProfiles(): Promise<ProfileResponse[]> {
-    const profiles = await this.profilesRepository.findAll();
-    return profiles.map((profile) => this.profileToResponse(profile));
+  async getAllProfiles(
+    pagination: PaginationRequest
+  ): Promise<PaginationResponse<Profile>> {
+    pagination.page = pagination.page > 0 ? pagination.page : 1;
+    pagination.pageSize = pagination.pageSize > 0 ? pagination.pageSize : 10;
+    const { rows, count } = await this.profilesRepository.findAll(pagination);
+
+    const response: PaginationResponse<Profile> = {
+      items: rows,
+      totalItems: count,
+      totalPages: Math.ceil(count / pagination.pageSize) || 1,
+      currentPage: pagination.page,
+      pageSize: pagination.pageSize,
+    };
+
+    return response;
   }
 
-  async getProfileById(id: string): Promise<ProfileResponse> {
+  async getProfileById(id: string): Promise<Profile> {
     const profile = await this.profilesRepository.findById(id);
     if (!profile) {
       throw new Error("Profile not found");
     }
-    return this.profileToResponse(profile);
+    return profile;
   }
 
-  async updateProfile(id: string, data: UpdateProfileInput): Promise<ProfileResponse> {
+  async updateProfile(id: string, data: UpdateProfileInput): Promise<Profile> {
     const profile = await this.profilesRepository.update(id, data);
     if (!profile) {
       throw new Error("Profile not found");
     }
-    return this.profileToResponse(profile);
+    return profile;
   }
 
   async deleteProfile(id: string): Promise<void> {

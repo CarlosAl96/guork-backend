@@ -13,7 +13,7 @@ export const createUserSchema = z.object({
   postalCode: z.string().optional(),
   dniImg: z.string().optional(),
   profileImg: z.string().optional(),
-  role: z.enum(["user", "admin"]).optional(),
+  role: z.enum(["user", "admin", "expert"]).optional(),
 });
 
 // Schema de validación para actualización de usuario
@@ -28,7 +28,7 @@ export const updateUserSchema = z.object({
   postalCode: z.string().optional(),
   dniImg: z.string().optional(),
   profileImg: z.string().optional(),
-  role: z.enum(["user", "admin"]).optional(),
+  role: z.enum(["user", "admin", "expert"]).optional(),
 });
 
 // Schema de validación para login

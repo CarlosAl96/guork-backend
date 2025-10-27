@@ -1,4 +1,4 @@
-export interface ProfileAttributes {
+export interface Profile {
   id: string;
   name: string;
   status: string;
@@ -6,6 +6,5 @@ export interface ProfileAttributes {
   updatedAt?: Date;
 }
 
-export interface ProfileCreationAttributes extends Omit<ProfileAttributes, "id" | "createdAt" | "updatedAt"> {}
-
-export interface ProfileResponse extends Omit<ProfileAttributes, "createdAt" | "updatedAt"> {}
+export interface ProfileCreation
+  extends Omit<Profile, "id" | "createdAt" | "updatedAt"> {}

@@ -4,7 +4,7 @@ import { UserRepository } from "../users/usersRepository";
 import { AuthRepository } from "./authRepository";
 import { CreateUserInput } from "../users/schemas/usersZodSchema";
 import { LoginInput } from "./schemas/authZodSchema";
-import { UserCreationAttributes, UserResponse } from "../users/usersTypes";
+import { UserCreation, UserResponse } from "../users/usersTypes";
 
 export class AuthService {
   private userRepository: UserRepository;
@@ -40,7 +40,7 @@ export class AuthService {
 
     // Hash password
     let hashedPassword;
-    const userData: UserCreationAttributes = { ...data, birthdate: undefined };
+    const userData: UserCreation = { ...data, birthdate: undefined };
 
     if (data.password) {
       hashedPassword = await bcrypt.hash(data.password, 10);

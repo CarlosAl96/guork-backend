@@ -1,19 +1,17 @@
 import bcrypt from "bcrypt";
 import { UserRepository } from "./usersRepository";
 import { CreateUserInput, UpdateUserInput } from "./schemas/usersZodSchema";
-import { UserCreationAttributes, UserResponse } from "./usersTypes";
+import { UserCreation, UserResponse } from "./usersTypes";
+import { PaginationRequest } from "../../shared/types/paginationRequest";
+import { PaginationResponse } from "../../shared/types/paginationResponse";
 import { de } from "zod/v4/locales";
+import UserModel from "./models/userModel";
 
 export class UserService {
   private userRepository: UserRepository;
 
   constructor() {
     this.userRepository = new UserRepository();
-  }
-
-  private userToResponse(user: any): UserResponse {
-    const { password, createdAt, updatedAt, ...userResponse } = user.toJSON();
-    return userResponse;
   }
 
   async createUser(data: CreateUserInput): Promise<UserResponse> {
@@ -32,7 +30,7 @@ export class UserService {
     }
 
     let hashedPassword;
-    const userData: UserCreationAttributes = { ...data, birthdate: undefined };
+    const userData: UserCreation = { ...data, birthdate: undefined };
     // Hash password
     if (data.password) {
       hashedPassword = await bcrypt.hash(data.password, 10);
@@ -51,12 +49,25 @@ export class UserService {
       role: userData.role || "user",
     });
 
-    return this.userToResponse(user);
+    return user.toJSON() as UserResponse;
   }
 
-  async getAllUsers(): Promise<UserResponse[]> {
-    const users = await this.userRepository.findAll();
-    return users.map((user) => this.userToResponse(user));
+  async getAllUsers(
+    pagination: PaginationRequest
+  ): Promise<PaginationResponse<UserResponse>> {
+    pagination.page = pagination.page > 0 ? pagination.page : 1;
+    pagination.pageSize = pagination.pageSize > 0 ? pagination.pageSize : 10;
+    const { rows, count } = await this.userRepository.findAll(pagination);
+
+    const response: PaginationResponse<UserResponse> = {
+      items: rows.map((user) => user.toJSON() as UserResponse),
+      totalItems: count,
+      totalPages: Math.ceil(count / pagination.pageSize) || 1,
+      currentPage: pagination.page,
+      pageSize: pagination.pageSize,
+    };
+
+    return response;
   }
 
   async getUserById(id: string): Promise<UserResponse> {
@@ -64,7 +75,7 @@ export class UserService {
     if (!user) {
       throw new Error("User not found");
     }
-    return this.userToResponse(user);
+    return user.toJSON() as UserResponse;
   }
 
   async updateUser(id: string, data: UpdateUserInput): Promise<UserResponse> {
@@ -75,7 +86,7 @@ export class UserService {
     if (!user) {
       throw new Error("User not found");
     }
-    return this.userToResponse(user);
+    return user.toJSON() as UserResponse;
   }
 
   async deleteUser(id: string): Promise<void> {

@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { ProfilesService } from "./profilesService";
-import { createProfileSchema, updateProfileSchema } from "./schemas/profilesZodSchema";
+import {
+  createProfileSchema,
+  updateProfileSchema,
+} from "./schemas/profilesZodSchema";
 import { ZodError } from "zod";
+import { PaginationRequest } from "../../shared/types/paginationRequest";
 
 const profilesService = new ProfilesService();
 
@@ -18,10 +22,19 @@ export const createProfile = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllProfiles = async (_req: Request, res: Response) => {
+export const getAllProfiles = async (req: Request, res: Response) => {
   try {
-    const profiles = await profilesService.getAllProfiles();
-    res.json(profiles);
+    const pagination: PaginationRequest = {
+      page: Number.parseInt((req.query.page as string) || "1", 10),
+      pageSize: Number.parseInt((req.query.pageSize as string) || "10", 10),
+      sortBy: (req.query.sortBy as string) || undefined,
+      sortOrder: req.query.sortOrder as string as "asc" | "desc" | undefined,
+      search: (req.query.search as string) || undefined,
+      status: (req.query.status as string) || undefined,
+    };
+
+    const result = await profilesService.getAllProfiles(pagination);
+    res.json(result);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

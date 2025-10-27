@@ -6,4 +6,5 @@ export type PaginationRequest = {
   search?: string;
   role?: string;
   status?: string;
+  profile?: string;
 };

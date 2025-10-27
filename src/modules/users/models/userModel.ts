@@ -13,6 +13,7 @@ import PasswordResetRequestModel from "../../auth/models/passwordResetRequestMod
 import ProfileModel from "../../profiles/models/profileModel";
 import UserProfileModel from "./userProfileModel";
 import RequestModel from "../../requests/models/requestModel";
+import AssignmentModel from "../../assignments/models/assignmentModel";
 
 @Table({ tableName: "users", timestamps: false, underscored: true })
 export default class UserModel extends Model {
@@ -67,6 +68,9 @@ export default class UserModel extends Model {
 
   @HasMany(() => RequestModel, { foreignKey: "requesterId", as: "requests" })
   requests!: RequestModel[];
+
+  @HasMany(() => AssignmentModel, { foreignKey: "assignedId", as: "assignments" })
+  assignments!: AssignmentModel[];
 
   @Column({
     type: DataType.DATE,

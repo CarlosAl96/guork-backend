@@ -40,6 +40,7 @@ export class UserController {
         sortOrder: req.query.sortOrder as string as "asc" | "desc" | undefined,
         search: (req.query.search as string) || undefined,
         role: (req.query.role as string) || undefined,
+        profile: (req.query.profile as string) || undefined,
       };
 
       const result: PaginationResponse<UserResponse> =

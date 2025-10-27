@@ -37,6 +37,10 @@ User:
       type: array
       items:
         $ref: '../../requests/schemas/requestsSwaggerSchema.yml#/Request'
+    assignments:
+      type: array
+      items:
+        $ref: '../../assignments/schemas/assignmentsSwaggerSchema.yml#/Assignment'
 
 CreateUser:
   type: object

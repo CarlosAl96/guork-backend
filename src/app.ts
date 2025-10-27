@@ -8,6 +8,7 @@ import usersRoutes from "./modules/users/usersRoutes";
 import profilesRoutes from "./modules/profiles/profilesRoutes";
 import authRoutes from "./modules/auth/authRoutes";
 import requestsRoutes from "./modules/requests/requestsRoutes";
+import assignmentsRoutes from "./modules/assignments/assignmentsRoutes";
 
 dotenv.config({ quiet: true });
 
@@ -34,6 +35,7 @@ app.use(`${BASE_PATH}/auth`, authRoutes);
 app.use(`${BASE_PATH}/users`, usersRoutes);
 app.use(`${BASE_PATH}/profiles`, profilesRoutes);
 app.use(`${BASE_PATH}/requests`, requestsRoutes);
+app.use(`${BASE_PATH}/assignments`, assignmentsRoutes);
 
 // Initialize database
 const startServer = async () => {

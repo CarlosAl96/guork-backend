@@ -1,7 +1,8 @@
-import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, BelongsTo } from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, BelongsTo, HasOne } from "sequelize-typescript";
 import { UUIDV4 } from "sequelize";
 import UserModel from "../../users/models/userModel";
 import ProfileModel from "../../profiles/models/profileModel";
+import AssignmentModel from "../../assignments/models/assignmentModel";
 
 @Table({ tableName: "requests", timestamps: true, underscored: true })
 export default class RequestModel extends Model {
@@ -19,7 +20,7 @@ export default class RequestModel extends Model {
   @Column({ type: DataType.UUID, allowNull: false, field: "requester_id" })
   requesterId!: string;
 
-  @Column({ type: DataType.TEXT, allowNull: false, defaultValue: "in progress" })
+  @Column({ type: DataType.TEXT, allowNull: false, defaultValue: "in-progress" })
   status!: string;
 
   @ForeignKey(() => ProfileModel)
@@ -31,6 +32,9 @@ export default class RequestModel extends Model {
 
   @BelongsTo(() => ProfileModel)
   profile!: ProfileModel;
+
+  @HasOne(() => AssignmentModel, { foreignKey: "requestId", as: "assignment" })
+  assignment?: AssignmentModel;
 
   @Column({
     type: DataType.DATE,

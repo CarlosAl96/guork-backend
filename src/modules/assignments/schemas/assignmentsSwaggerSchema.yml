@@ -1,22 +1,16 @@
-Request:
+Assignment:
   type: object
   properties:
     id:
       type: string
       format: uuid
-    employmentType:
-      type: string
-      example: full-time
-    amount:
-      type: number
-      example: 1000
-    requesterId:
+    requestId:
       type: string
       format: uuid
     status:
       type: string
-      example: in-progress
-    profileId:
+      example: assigned
+    assignedId:
       type: string
       format: uuid
     createdAt:
@@ -25,34 +19,27 @@ Request:
     updatedAt:
       type: string
       format: date-time
-CreateRequest:
+CreateAssignment:
   type: object
-  required: [employmentType, amount, requesterId, profileId]
+  required: [requestId, assignedId]
   properties:
-    employmentType:
-      type: string
-    amount:
-      type: number
-    requesterId:
+    requestId:
       type: string
       format: uuid
     status:
       type: string
-    profileId:
+      example: assigned
+    assignedId:
       type: string
       format: uuid
-UpdateRequest:
+UpdateAssignment:
   type: object
   properties:
-    employmentType:
-      type: string
-    amount:
-      type: number
-    requesterId:
+    requestId:
       type: string
       format: uuid
     status:
       type: string
-    profileId:
+    assignedId:
       type: string
       format: uuid

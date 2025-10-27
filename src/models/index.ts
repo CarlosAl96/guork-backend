@@ -4,6 +4,7 @@ import PasswordResetRequestModel from "../modules/auth/models/passwordResetReque
 import ProfileModel from "../modules/profiles/models/profileModel";
 import UserProfileModel from "../modules/users/models/userProfileModel";
 import RequestModel from "../modules/requests/models/requestModel";
+import AssignmentModel from "../modules/assignments/models/assignmentModel";
 
 export {
   UserModel,
@@ -12,6 +13,7 @@ export {
   ProfileModel,
   UserProfileModel,
   RequestModel,
+  AssignmentModel,
 };
 
 export const models = [
@@ -21,4 +23,5 @@ export const models = [
   ProfileModel,
   UserProfileModel,
   RequestModel,
+  AssignmentModel,
 ];

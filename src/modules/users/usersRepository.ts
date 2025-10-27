@@ -4,6 +4,7 @@ import { PaginationRequest } from "../../shared/types/paginationRequest";
 import { Op, WhereOptions } from "sequelize";
 import ProfileModel from "../profiles/models/profileModel";
 import RequestModel from "../requests/models/requestModel";
+import AssignmentModel from "../assignments/models/assignmentModel";
 
 export class UserRepository {
   async create(data: UserCreation): Promise<User> {
@@ -47,6 +48,12 @@ export class UserRepository {
       andConditions.push({ role: pagination.role });
     }
 
+    if (pagination.profile && pagination.profile.trim() !== "") {
+      andConditions.push({
+        "$profile.name$": { [Op.iLike]: `%${pagination.profile}%` },
+      });
+    }
+
     where = andConditions.length ? { [Op.and]: andConditions } : undefined;
 
     const result = await User.findAndCountAll({
@@ -62,6 +69,10 @@ export class UserRepository {
         {
           model: RequestModel,
           as: "requests",
+        },
+        {
+          model: AssignmentModel,
+          as: "assignments",
         },
       ],
     });
@@ -80,6 +91,10 @@ export class UserRepository {
           model: RequestModel,
           as: "requests",
         },
+        {
+          model: AssignmentModel,
+          as: "assignments",
+        },
       ],
     });
   }
@@ -96,6 +111,10 @@ export class UserRepository {
           model: RequestModel,
           as: "requests",
         },
+        {
+          model: AssignmentModel,
+          as: "assignments",
+        },
       ],
     });
   }
@@ -111,6 +130,10 @@ export class UserRepository {
         {
           model: RequestModel,
           as: "requests",
+        },
+        {
+          model: AssignmentModel,
+          as: "assignments",
         },
       ],
     });

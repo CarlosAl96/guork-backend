@@ -17,7 +17,7 @@ export class RequestsService {
   async createRequest(data: CreateRequestInput): Promise<RequestModel> {
     const record = await this.requestsRepository.create({
       ...data,
-      status: data.status || "in progress",
+      status: data.status || "in-progress",
     });
     return record;
   }

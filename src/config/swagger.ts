@@ -51,6 +51,10 @@ const options: swaggerJSDoc.Options = {
         name: "Requests",
         description: "Requests management operations",
       },
+      {
+        name: "Assignments",
+        description: "Assignments management operations",
+      },
     ],
     security: [
       {
@@ -99,6 +103,15 @@ const options: swaggerJSDoc.Options = {
         UpdateRequest: {
           $ref: "../modules/requests/schemas/requestsSwaggerSchema.yml#/UpdateRequest",
         },
+        Assignment: {
+          $ref: "../modules/assignments/schemas/assignmentsSwaggerSchema.yml#/Assignment",
+        },
+        CreateAssignment: {
+          $ref: "../modules/assignments/schemas/assignmentsSwaggerSchema.yml#/CreateAssignment",
+        },
+        UpdateAssignment: {
+          $ref: "../modules/assignments/schemas/assignmentsSwaggerSchema.yml#/UpdateAssignment",
+        },
       },
     },
   },
@@ -107,6 +120,7 @@ const options: swaggerJSDoc.Options = {
     "src/modules/users/*.ts",
     "src/modules/profiles/*.ts",
     "src/modules/requests/*.ts",
+    "src/modules/assignments/*.ts",
   ],
 };
 

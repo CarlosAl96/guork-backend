@@ -5,6 +5,7 @@ import { AuthRepository } from "./authRepository";
 import { CreateUserInput } from "../users/schemas/usersZodSchema";
 import { LoginInput } from "./schemas/authZodSchema";
 import { UserCreation, UserResponse } from "../users/usersTypes";
+import ProfileModel from "../profiles/models/profileModel";
 
 export class AuthService {
   private userRepository: UserRepository;
@@ -54,10 +55,17 @@ export class AuthService {
     }
 
     // Crear usuario
-    const user = await this.userRepository.create({
+    let user = await this.userRepository.create({
       ...userData,
       role: data.role || "user",
     });
+
+    // Asociar perfiles si llegan desde el front
+    if (Array.isArray(data.profiles) && data.profiles.length > 0) {
+      await (user as any).$set("profiles", data.profiles);
+      // Recargar usuario con perfiles incluidos para la respuesta
+      user = await this.userRepository.findById(user.id) as any;
+    }
 
     // Generar token
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {
@@ -78,7 +86,7 @@ export class AuthService {
     ip: string
   ): Promise<{ user: UserResponse; token: string }> {
     // Buscar usuario
-    const user = await this.userRepository.findByEmail(data.email);
+  const user = await this.userRepository.findByEmail(data.email);
     if (!user) {
       throw new Error("Invalid credentials");
     }

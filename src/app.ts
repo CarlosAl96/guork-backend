@@ -7,6 +7,7 @@ import { swaggerSpecs } from "./config/swagger";
 import usersRoutes from "./modules/users/usersRoutes";
 import profilesRoutes from "./modules/profiles/profilesRoutes";
 import authRoutes from "./modules/auth/authRoutes";
+import requestsRoutes from "./modules/requests/requestsRoutes";
 
 dotenv.config({ quiet: true });
 
@@ -32,6 +33,7 @@ app.get("/health", (req, res) => {
 app.use(`${BASE_PATH}/auth`, authRoutes);
 app.use(`${BASE_PATH}/users`, usersRoutes);
 app.use(`${BASE_PATH}/profiles`, profilesRoutes);
+app.use(`${BASE_PATH}/requests`, requestsRoutes);
 
 // Initialize database
 const startServer = async () => {

@@ -1,3 +1,5 @@
+import { Profile } from "../profiles/profilesTypes";
+
 export interface User {
   id: string;
   firstName?: string;
@@ -12,12 +14,13 @@ export interface User {
   address?: string;
   postalCode?: string;
   profileImg?: string;
+  profiles?: Profile[];
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 export interface UserCreation
-  extends Omit<User, "id" | "createdAt" | "updatedAt"> {}
+  extends Omit<User, "id" | "createdAt" | "updatedAt" | "profiles"> {}
 
 export interface UserResponse
   extends Omit<User, "password" | "createdAt" | "updatedAt"> {}

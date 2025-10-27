@@ -1,5 +1,7 @@
-import { Table, Column, Model, DataType, PrimaryKey } from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, BelongsToMany } from "sequelize-typescript";
 import { UUIDV4 } from "sequelize";
+import UserModel from "../../users/models/userModel";
+import UserProfileModel from "../../users/models/userProfileModel";
 
 @Table({ tableName: "profiles", timestamps: true, underscored: true })
 export default class ProfileModel extends Model {
@@ -12,4 +14,7 @@ export default class ProfileModel extends Model {
 
   @Column({ type: DataType.TEXT, allowNull: false, defaultValue: "available" })
   status!: string;
+
+  @BelongsToMany(() => UserModel, () => UserProfileModel)
+  users!: UserModel[];
 }

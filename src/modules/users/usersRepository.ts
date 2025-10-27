@@ -2,6 +2,8 @@ import User from "./models/userModel";
 import { UserCreation } from "./usersTypes";
 import { PaginationRequest } from "../../shared/types/paginationRequest";
 import { Op, WhereOptions } from "sequelize";
+import ProfileModel from "../profiles/models/profileModel";
+import RequestModel from "../requests/models/requestModel";
 
 export class UserRepository {
   async create(data: UserCreation): Promise<User> {
@@ -52,21 +54,66 @@ export class UserRepository {
       limit,
       offset,
       order: [[orderField as any, orderDirection]],
+      include: [
+        {
+          model: ProfileModel,
+          through: { attributes: [] },
+        },
+        {
+          model: RequestModel,
+          as: "requests",
+        },
+      ],
     });
 
     return { rows: result.rows, count: result.count };
   }
 
   async findById(id: string): Promise<User | null> {
-    return await User.findByPk(id);
+    return await User.findByPk(id, {
+      include: [
+        {
+          model: ProfileModel,
+          through: { attributes: [] },
+        },
+        {
+          model: RequestModel,
+          as: "requests",
+        },
+      ],
+    });
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return await User.findOne({ where: { email } });
+    return await User.findOne({
+      where: { email },
+      include: [
+        {
+          model: ProfileModel,
+          through: { attributes: [] },
+        },
+        {
+          model: RequestModel,
+          as: "requests",
+        },
+      ],
+    });
   }
 
   async findByDni(dni: string): Promise<User | null> {
-    return await User.findOne({ where: { dni } });
+    return await User.findOne({
+      where: { dni },
+      include: [
+        {
+          model: ProfileModel,
+          through: { attributes: [] },
+        },
+        {
+          model: RequestModel,
+          as: "requests",
+        },
+      ],
+    });
   }
 
   async update(id: string, data: Partial<UserCreation>): Promise<User | null> {

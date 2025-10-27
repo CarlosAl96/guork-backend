@@ -5,10 +5,14 @@ import {
   DataType,
   PrimaryKey,
   HasMany,
+  BelongsToMany,
 } from "sequelize-typescript";
 import { UUIDV4 } from "sequelize";
 import SessionModel from "../../auth/models/sessionModel";
 import PasswordResetRequestModel from "../../auth/models/passwordResetRequestModel";
+import ProfileModel from "../../profiles/models/profileModel";
+import UserProfileModel from "./userProfileModel";
+import RequestModel from "../../requests/models/requestModel";
 
 @Table({ tableName: "users", timestamps: false, underscored: true })
 export default class UserModel extends Model {
@@ -57,6 +61,12 @@ export default class UserModel extends Model {
 
   @HasMany(() => PasswordResetRequestModel)
   passwordResetRequests!: PasswordResetRequestModel[];
+
+  @BelongsToMany(() => ProfileModel, () => UserProfileModel)
+  profiles!: ProfileModel[];
+
+  @HasMany(() => RequestModel, { foreignKey: "requesterId", as: "requests" })
+  requests!: RequestModel[];
 
   @Column({
     type: DataType.DATE,

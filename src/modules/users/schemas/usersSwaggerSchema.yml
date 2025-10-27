@@ -15,7 +15,7 @@ User:
       type: string
     role:
       type: string
-      enum: [user, admin]
+      enum: [user, admin, expert]
     dni:
       type: string
     birthdate:
@@ -29,6 +29,14 @@ User:
       type: string
     profileImg:
       type: string
+    profiles:
+      type: array
+      items:
+        $ref: '../../profiles/schemas/profilesSwaggerSchema.yml#/Profile'
+    requests:
+      type: array
+      items:
+        $ref: '../../requests/schemas/requestsSwaggerSchema.yml#/Request'
 
 CreateUser:
   type: object
@@ -68,8 +76,13 @@ CreateUser:
       type: string
     role:
       type: string
-      enum: [user, admin]
+      enum: [user, admin, expert]
       default: user
+    profiles:
+      type: array
+      items:
+        type: string
+        format: uuid
 
 UpdateUser:
   type: object

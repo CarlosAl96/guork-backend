@@ -9,6 +9,8 @@ Profile:
     status:
       type: string
       default: available
+    descriptions:
+      type: string
 
 CreateProfile:
   type: object
@@ -20,6 +22,8 @@ CreateProfile:
     status:
       type: string
       default: available
+    descriptions:
+      type: string
 
 UpdateProfile:
   type: object
@@ -27,4 +31,6 @@ UpdateProfile:
     name:
       type: string
     status:
+      type: string
+    descriptions:
       type: string

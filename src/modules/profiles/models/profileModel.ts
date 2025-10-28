@@ -1,4 +1,11 @@
-import { Table, Column, Model, DataType, PrimaryKey, BelongsToMany } from "sequelize-typescript";
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  PrimaryKey,
+  BelongsToMany,
+} from "sequelize-typescript";
 import { UUIDV4 } from "sequelize";
 import UserModel from "../../users/models/userModel";
 import UserProfileModel from "../../users/models/userProfileModel";
@@ -14,6 +21,9 @@ export default class ProfileModel extends Model {
 
   @Column({ type: DataType.TEXT, allowNull: false, defaultValue: "available" })
   status!: string;
+
+  @Column({ type: DataType.TEXT, allowNull: true })
+  descriptions?: string;
 
   @BelongsToMany(() => UserModel, () => UserProfileModel)
   users!: UserModel[];

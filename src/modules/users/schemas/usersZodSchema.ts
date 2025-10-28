@@ -3,7 +3,7 @@ import { z } from "zod";
 // Schema de validación para creación de usuario
 export const createUserSchema = z.object({
   firstName: z.string().min(1).optional(),
-  lastName: z.string().min(1).optional(),
+  lastName: z.string().optional(),
   email: z.string().email("Invalid email format"),
   phone: z.string().optional(),
   password: z.string().min(6).optional(),

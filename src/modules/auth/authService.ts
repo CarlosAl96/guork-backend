@@ -68,9 +68,7 @@ export class AuthService {
     }
 
     // Generar token
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
 
     // Guardar sesión
     await this.authRepository.createSession(token, ip, user.id);
@@ -98,9 +96,7 @@ export class AuthService {
     }
 
     // Generar token
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
 
     // Guardar sesión
     await this.authRepository.createSession(token, ip, user.id);

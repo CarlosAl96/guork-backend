@@ -7,14 +7,8 @@
     "dev": "nodemon src/server.ts",
     "build": "rimraf dist && tsc",
     "ts-check": "tsc --project tsconfig.json",
-    "start": "node dist/server.js",
-    "add-build": "git add dist"
+    "start": "node dist/server.js"
   },
-  "pre-commit": [
-    "ts-check",
-    "build",
-    "add-build"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CarlosAl96/guork-backend.git"

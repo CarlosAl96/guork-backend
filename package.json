@@ -7,7 +7,7 @@
     "dev": "nodemon src/server.ts",
     "build": "rimraf dist && tsc",
     "ts-check": "tsc --project tsconfig.json",
-    "start": "node dist/vercel.js",
+    "start": "node dist/server.js",
     "add-build": "git add dist"
   },
   "pre-commit": [
@@ -28,6 +28,7 @@
   "keywords": [],
   "description": "",
   "dependencies": {
+    "@vercel/node": "^5.5.6",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",

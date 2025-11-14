@@ -28,7 +28,7 @@ class ProfilesRepository {
             andConditions.push({
                 [sequelize_1.Op.or]: [
                     { name: { [sequelize_1.Op.iLike]: `%${pagination.search}%` } },
-                    { status: { [sequelize_1.Op.iLike]: `%${pagination.search}%` } },
+                    // { status: { [Op.iLike]: `%${pagination.search}%` } },
                 ],
             });
         }

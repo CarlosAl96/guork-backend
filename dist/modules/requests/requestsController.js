@@ -7,6 +7,7 @@ const zod_1 = require("zod");
 const requestsService = new requestsService_1.RequestsService();
 const createRequest = async (req, res) => {
     try {
+        console.log(req.body);
         const validatedData = requestsZodSchema_1.createRequestSchema.parse(req.body);
         const record = await requestsService.createRequest(validatedData);
         res.status(201).json(record);

@@ -11,6 +11,7 @@ const requestsService = new RequestsService();
 
 export const createRequest = async (req: Request, res: Response) => {
   try {
+    console.log(req.body);
     const validatedData = createRequestSchema.parse(req.body);
     const record = await requestsService.createRequest(validatedData);
     res.status(201).json(record);

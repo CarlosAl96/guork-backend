@@ -33,7 +33,7 @@ export class ProfilesRepository {
       andConditions.push({
         [Op.or]: [
           { name: { [Op.iLike]: `%${pagination.search}%` } },
-          { status: { [Op.iLike]: `%${pagination.search}%` } },
+          // { status: { [Op.iLike]: `%${pagination.search}%` } },
         ],
       });
     }

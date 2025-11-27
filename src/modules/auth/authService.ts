@@ -71,7 +71,7 @@ export class AuthService {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
 
     // Guardar sesión
-    await this.authRepository.createSession(token, ip, user.id);
+    await this.authRepository.createSession(token, ip, user.id, '');
 
     return {
       user: this.userToResponse(user),
@@ -84,7 +84,7 @@ export class AuthService {
     ip: string
   ): Promise<{ user: UserResponse; token: string }> {
     // Buscar usuario
-  const user = await this.userRepository.findByEmail(data.email);
+    const user = await this.userRepository.findByEmail(data.email);
     if (!user) {
       throw new Error("Invalid credentials");
     }
@@ -99,7 +99,7 @@ export class AuthService {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
 
     // Guardar sesión
-    await this.authRepository.createSession(token, ip, user.id);
+    await this.authRepository.createSession(token, ip, user.id, data.token);
 
     return {
       user: this.userToResponse(user),

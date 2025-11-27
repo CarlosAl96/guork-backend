@@ -64,7 +64,7 @@ export class AuthService {
     if (Array.isArray(data.profiles) && data.profiles.length > 0) {
       await (user as any).$set("profiles", data.profiles);
       // Recargar usuario con perfiles incluidos para la respuesta
-      user = await this.userRepository.findById(user.id) as any;
+      user = (await this.userRepository.findById(user.id)) as any;
     }
 
     // Generar token
@@ -84,7 +84,7 @@ export class AuthService {
     ip: string
   ): Promise<{ user: UserResponse; token: string }> {
     // Buscar usuario
-  const user = await this.userRepository.findByEmail(data.email);
+    const user = await this.userRepository.findByEmail(data.email);
     if (!user) {
       throw new Error("Invalid credentials");
     }
@@ -96,7 +96,7 @@ export class AuthService {
     }
 
     // Generar token
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
+    const token = jwt.sign({ user }, process.env.JWT_SECRET!);
 
     // Guardar sesión
     await this.authRepository.createSession(token, ip, user.id);

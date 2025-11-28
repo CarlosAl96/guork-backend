@@ -57,7 +57,7 @@ class AuthService {
         // Generar token
         const token = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_SECRET);
         // Guardar sesión
-        await this.authRepository.createSession(token, ip, user.id);
+        await this.authRepository.createSession(token, ip, user.id, '');
         return {
             user: this.userToResponse(user),
             token,
@@ -77,7 +77,7 @@ class AuthService {
         // Generar token
         const token = jsonwebtoken_1.default.sign({ user }, process.env.JWT_SECRET);
         // Guardar sesión
-        await this.authRepository.createSession(token, ip, user.id);
+        await this.authRepository.createSession(token, ip, user.id, data.token);
         return {
             user: this.userToResponse(user),
             token,

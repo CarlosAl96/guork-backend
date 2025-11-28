@@ -28,6 +28,7 @@ class AuthController {
         };
         this.login = async (req, res) => {
             try {
+                console.log('asd');
                 const validatedData = authZodSchema_1.loginSchema.parse(req.body);
                 const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown";
                 const result = await this.authService.login(validatedData, ip);

@@ -31,6 +31,14 @@ class AssignmentsService {
             throw new Error("Assignment not found");
         return record;
     }
+    async getAssignmentByRequesterId(id) {
+        const records = await this.assignmentsRepository.findByRequestId(id);
+        if (!records)
+            throw new Error("Assignment not found");
+        return {
+            rows: records
+        };
+    }
     async updateAssignment(id, data) {
         const record = await this.assignmentsRepository.update(id, data);
         if (!record)

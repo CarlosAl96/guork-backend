@@ -32,6 +32,7 @@ export class AuthController {
 
   login = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log('asd');
       const validatedData = loginSchema.parse(req.body);
       const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "unknown";
       const result = await this.authService.login(validatedData, ip);

@@ -47,6 +47,13 @@ export class AssignmentsService {
     if (!record) throw new Error("Assignment not found");
     return record;
   }
+  async getAssignmentByRequesterId(id: string): Promise<{ rows: AssignmentModel[] }> {
+    const records = await this.assignmentsRepository.findByRequestId(id);
+    if (!records) throw new Error("Assignment not found");
+    return {
+      rows: records
+    };
+  }
 
   async updateAssignment(
     id: string,

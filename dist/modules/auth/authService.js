@@ -57,7 +57,7 @@ class AuthService {
         // Generar token
         const token = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_SECRET);
         // Guardar sesión
-        await this.authRepository.createSession(token, ip, user.id, '');
+        await this.authRepository.createSession(token, ip, user.id, "");
         return {
             user: this.userToResponse(user),
             token,
@@ -88,6 +88,19 @@ class AuthService {
         if (!deleted) {
             throw new Error("Session not found");
         }
+    }
+    async createPasswordResetRequest(token, userId) {
+        return await this.authRepository.createPasswordResetRequest(token, userId);
+    }
+    async findPasswordResetRequestByToken(token) {
+        return await this.authRepository.findPasswordResetRequestByToken(token);
+    }
+    async deletePasswordResetRequest(token) {
+        const passwordReset = await this.findPasswordResetRequestByToken(token);
+        if (!passwordReset)
+            return false;
+        await passwordReset.destroy();
+        return true;
     }
 }
 exports.AuthService = AuthService;

@@ -5,7 +5,7 @@ import { AuthRepository } from "./authRepository";
 import { CreateUserInput } from "../users/schemas/usersZodSchema";
 import { LoginInput } from "./schemas/authZodSchema";
 import { UserCreation, UserResponse } from "../users/usersTypes";
-import ProfileModel from "../profiles/models/profileModel";
+import PasswordResetRequestModel from "./models/passwordResetRequestModel";
 
 export class AuthService {
   private userRepository: UserRepository;
@@ -71,7 +71,7 @@ export class AuthService {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
 
     // Guardar sesión
-    await this.authRepository.createSession(token, ip, user.id, '');
+    await this.authRepository.createSession(token, ip, user.id, "");
 
     return {
       user: this.userToResponse(user),
@@ -112,5 +112,25 @@ export class AuthService {
     if (!deleted) {
       throw new Error("Session not found");
     }
+  }
+
+  async createPasswordResetRequest(
+    token: string,
+    userId: string
+  ): Promise<PasswordResetRequestModel> {
+    return await this.authRepository.createPasswordResetRequest(token, userId);
+  }
+
+  async findPasswordResetRequestByToken(
+    token: string
+  ): Promise<PasswordResetRequestModel | null> {
+    return await this.authRepository.findPasswordResetRequestByToken(token);
+  }
+
+  async deletePasswordResetRequest(token: string): Promise<boolean> {
+    const passwordReset = await this.findPasswordResetRequestByToken(token);
+    if (!passwordReset) return false;
+    await passwordReset.destroy();
+    return true;
   }
 }

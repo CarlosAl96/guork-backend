@@ -9,7 +9,7 @@ class AssignmentsService {
     async createAssignment(data) {
         const record = await this.assignmentsRepository.create({
             ...data,
-            status: data.status || "assigned",
+            status: data.status || "in-progress",
         });
         return record;
     }

@@ -53,6 +53,7 @@ router.post("/register", upload.single("image"), authController.register);
  *         description: Invalid credentials
  */
 router.post("/login", authController.login);
+router.post("/loginByGoogle", authController.loginByGoogle);
 
 /**
  * @swagger

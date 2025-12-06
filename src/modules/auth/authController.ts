@@ -66,6 +66,27 @@ export class AuthController {
       res.status(500).json({ message: "Internal server error" });
     }
   };
+  loginByGoogle = async (req: Request, res: Response): Promise<void> => {
+    try {
+      console.log("asd");
+      const ip =
+        (req.headers["x-forwarded-for"] as string) ||
+        req.socket.remoteAddress ||
+        "unknown";
+      const result = await this.authService.loginByGoogle(req.body, ip);
+      res.status(200).json(result);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        res.status(400).json({ errors: error.issues });
+        return;
+      }
+      if (error instanceof Error) {
+        res.status(401).json({ message: error.message });
+        return;
+      }
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
 
   logout = async (req: Request, res: Response): Promise<void> => {
     try {

@@ -94,9 +94,12 @@ export class AuthService {
     if (!isValid) {
       throw new Error("Invalid credentials");
     }
-
+    let userData = this.userToResponse(user);
+    delete (userData as any).requests;
+    delete (userData as any).profiles;
+    delete (userData as any).assignments;
     // Generar token
-    const token = jwt.sign({ user }, process.env.JWT_SECRET!);
+    const token = jwt.sign({ 'user': userData }, process.env.JWT_SECRET!);
 
     // Guardar sesión
     await this.authRepository.createSession(token, ip, user.id, data.token);
@@ -106,7 +109,30 @@ export class AuthService {
       token,
     };
   }
+  async loginByGoogle(
+    data: { email: string, token: string },
+    ip: string
+  ): Promise<{ user: UserResponse; token: string }> {
+    // Buscar usuario
+    const user = await this.userRepository.findByEmail(data.email);
+    if (!user) {
+      throw new Error("Invalid credentials");
+    }
+    let userData = this.userToResponse(user);
+    delete (userData as any).requests;
+    delete (userData as any).profiles;
+    delete (userData as any).assignments;
+    // Generar token
+    const token = jwt.sign({ 'user': userData }, process.env.JWT_SECRET!);
 
+    // Guardar sesión
+    await this.authRepository.createSession(token, ip, user.id, data.token);
+
+    return {
+      user: this.userToResponse(user),
+      token,
+    };
+  }
   async logout(token: string): Promise<void> {
     const deleted = await this.authRepository.deleteSession(token);
     if (!deleted) {

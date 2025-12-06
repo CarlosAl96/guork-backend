@@ -55,6 +55,7 @@ router.post("/register", uploadMiddleware_1.default.single("image"), authControl
  *         description: Invalid credentials
  */
 router.post("/login", authController.login);
+router.post("/loginByGoogle", authController.loginByGoogle);
 /**
  * @swagger
  * /auth/logout:

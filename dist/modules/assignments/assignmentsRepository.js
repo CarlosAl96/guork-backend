@@ -79,7 +79,9 @@ class AssignmentsRepository {
     }
     async findByRequestId(id) {
         var resul = await assignmentModel_1.default.findAll({
-            where: {},
+            where: {
+                status: 'assigned'
+            },
             attributes: [
                 'id',
                 [sequelize_1.Sequelize.col('assigned.profile_img'), 'assignedProfileImg'],

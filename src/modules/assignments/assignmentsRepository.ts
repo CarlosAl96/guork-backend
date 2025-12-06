@@ -92,6 +92,7 @@ export class AssignmentsRepository {
   async findByRequestId(id: string): Promise<AssignmentModel[] | null> {
     var resul = await AssignmentModel.findAll({
       where: {
+        status: 'assigned'
       },
       attributes: [
         'id',

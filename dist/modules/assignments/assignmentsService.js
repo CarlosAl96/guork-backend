@@ -10,6 +10,7 @@ class AssignmentsService {
         const record = await this.assignmentsRepository.create({
             ...data,
             status: data.status || "in-progress",
+            idSuscription: ''
         });
         return record;
     }

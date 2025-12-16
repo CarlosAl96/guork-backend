@@ -77,6 +77,41 @@ class AssignmentsRepository {
             ],
         });
     }
+    async findBySub(subId) {
+        return await assignmentModel_1.default.findOne({
+            where: {
+                idSuscription: subId
+            },
+            attributes: [
+                'id',
+                [sequelize_1.Sequelize.col('assigned.profile_img'), 'assignedProfileImg'],
+                [sequelize_1.Sequelize.col('assigned.first_name'), 'assignedFirstName'],
+                [sequelize_1.Sequelize.col('assigned.last_name'), 'assignedLastName'],
+                [sequelize_1.Sequelize.col('request.profile.name'), 'profileName'],
+                [sequelize_1.Sequelize.col('request.employment_type'), 'requestEmploymentType'],
+            ],
+            include: [
+                {
+                    model: userModel_1.default,
+                    as: "assigned",
+                    attributes: [],
+                },
+                {
+                    model: requestModel_1.default,
+                    as: 'request',
+                    attributes: [],
+                    required: true,
+                    include: [
+                        {
+                            model: models_1.ProfileModel,
+                            attributes: [],
+                            as: 'profile',
+                        }
+                    ]
+                },
+            ],
+        });
+    }
     async findByRequestId(id) {
         var resul = await assignmentModel_1.default.findAll({
             where: {

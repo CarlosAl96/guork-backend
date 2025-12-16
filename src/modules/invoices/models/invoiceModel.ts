@@ -20,6 +20,8 @@ export default class InvoiceModel extends Model {
     @Column({ type: DataType.DECIMAL(10, 2), allowNull: false, })
     amount!: string;
 
+    @Column({ type: DataType.TEXT, allowNull: false, defaultValue: '' })
+    urlInvoice!: string;
     @ForeignKey(() => AssignmentModel)
     @Column({ type: DataType.UUID, allowNull: false, })
     assignedId!: string;

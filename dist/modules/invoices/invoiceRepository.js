@@ -110,6 +110,7 @@ class InvoicesRepository {
                 'amount',
                 'createdAt',
                 'dueDate',
+                'urlInvoice',
                 [sequelize_1.Sequelize.col('assigned.assigned.profile_img'), 'assignedProfileImg'],
                 [sequelize_1.Sequelize.col('assigned.assigned.first_name'), 'assignedFirstName'],
                 [sequelize_1.Sequelize.col('assigned.assigned.last_name'), 'assignedLastName'],

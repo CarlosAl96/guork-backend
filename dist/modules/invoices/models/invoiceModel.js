@@ -28,6 +28,10 @@ __decorate([
     __metadata("design:type", String)
 ], InvoiceModel.prototype, "amount", void 0);
 __decorate([
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.TEXT, allowNull: false, defaultValue: '' }),
+    __metadata("design:type", String)
+], InvoiceModel.prototype, "urlInvoice", void 0);
+__decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => models_1.AssignmentModel),
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.UUID, allowNull: false, }),
     __metadata("design:type", String)

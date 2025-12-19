@@ -39,7 +39,9 @@ class AuthController {
         };
         this.login = async (req, res) => {
             try {
-                console.log("asd");
+                if (!req.body.token) {
+                    req.body.token = "";
+                }
                 const validatedData = authZodSchema_1.loginSchema.parse(req.body);
                 const ip = req.headers["x-forwarded-for"] ||
                     req.socket.remoteAddress ||

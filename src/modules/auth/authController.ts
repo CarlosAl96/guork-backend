@@ -46,7 +46,9 @@ export class AuthController {
 
   login = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("asd");
+      if (!req.body.token) {
+        req.body.token = "";
+      }
       const validatedData = loginSchema.parse(req.body);
       const ip =
         (req.headers["x-forwarded-for"] as string) ||

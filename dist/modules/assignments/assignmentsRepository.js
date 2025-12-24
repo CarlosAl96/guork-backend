@@ -30,12 +30,17 @@ class AssignmentsRepository {
             andConditions.push({
                 [sequelize_1.Op.or]: [
                     { status: { [sequelize_1.Op.iLike]: q } },
-                    { "$assigned.firstName$": { [sequelize_1.Op.iLike]: q } },
-                    { "$assigned.lastName$": { [sequelize_1.Op.iLike]: q } },
+                    { "$assigned.first_name$": { [sequelize_1.Op.iLike]: q } },
+                    { "$assigned.last_name$": { [sequelize_1.Op.iLike]: q } },
                     { "$assigned.email$": { [sequelize_1.Op.iLike]: q } },
                     { "$assigned.dni$": { [sequelize_1.Op.iLike]: q } },
-                    { "$request.employmentType$": { [sequelize_1.Op.iLike]: q } },
+                    { "$request.employment_type$": { [sequelize_1.Op.iLike]: q } },
                     { "$request.status$": { [sequelize_1.Op.iLike]: q } },
+                    { "$request.profile.name$": { [sequelize_1.Op.iLike]: q } },
+                    { "$request.requester.first_name$": { [sequelize_1.Op.iLike]: q } },
+                    { "$request.requester.last_name$": { [sequelize_1.Op.iLike]: q } },
+                    { "$request.requester.email$": { [sequelize_1.Op.iLike]: q } },
+                    { "$request.requester.dni$": { [sequelize_1.Op.iLike]: q } },
                 ],
             });
         }
@@ -56,6 +61,7 @@ class AssignmentsRepository {
                 },
                 {
                     model: requestModel_1.default,
+                    as: "request",
                     include: [
                         {
                             model: models_1.ProfileModel,
@@ -70,6 +76,7 @@ class AssignmentsRepository {
                 },
             ],
             distinct: true,
+            subQuery: false,
         });
         return { rows: result.rows, count: result.count };
     }

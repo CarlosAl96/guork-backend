@@ -35,12 +35,17 @@ export class AssignmentsRepository {
       andConditions.push({
         [Op.or]: [
           { status: { [Op.iLike]: q } },
-          { "$assigned.firstName$": { [Op.iLike]: q } },
-          { "$assigned.lastName$": { [Op.iLike]: q } },
+          { "$assigned.first_name$": { [Op.iLike]: q } },
+          { "$assigned.last_name$": { [Op.iLike]: q } },
           { "$assigned.email$": { [Op.iLike]: q } },
           { "$assigned.dni$": { [Op.iLike]: q } },
-          { "$request.employmentType$": { [Op.iLike]: q } },
+          { "$request.employment_type$": { [Op.iLike]: q } },
           { "$request.status$": { [Op.iLike]: q } },
+          { "$request.profile.name$": { [Op.iLike]: q } },
+          { "$request.requester.first_name$": { [Op.iLike]: q } },
+          { "$request.requester.last_name$": { [Op.iLike]: q } },
+          { "$request.requester.email$": { [Op.iLike]: q } },
+          { "$request.requester.dni$": { [Op.iLike]: q } },
         ],
       });
     }
@@ -64,6 +69,7 @@ export class AssignmentsRepository {
         },
         {
           model: RequestModel,
+          as: "request",
           include: [
             {
               model: ProfileModel,
@@ -78,6 +84,7 @@ export class AssignmentsRepository {
         },
       ],
       distinct: true,
+      subQuery: false,
     });
 
     return { rows: result.rows, count: result.count };

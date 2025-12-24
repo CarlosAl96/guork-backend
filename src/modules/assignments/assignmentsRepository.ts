@@ -63,14 +63,21 @@ export class AssignmentsRepository {
           attributes: { exclude: ["password"] },
         },
         {
-          model: RequestModel, include: [
+          model: RequestModel,
+          include: [
             {
-              model: ProfileModel
-            }
-
-          ]
+              model: ProfileModel,
+              as: "profile",
+            },
+            {
+              model: UserModel,
+              as: "requester",
+              attributes: { exclude: ["password"] },
+            },
+          ],
         },
       ],
+      distinct: true,
     });
 
     return { rows: result.rows, count: result.count };
@@ -91,15 +98,15 @@ export class AssignmentsRepository {
   async findBySub(subId: string): Promise<AssignmentModel | null> {
     return await AssignmentModel.findOne({
       where: {
-        idSuscription: subId
+        idSuscription: subId,
       },
       attributes: [
-        'id',
-        [Sequelize.col('assigned.profile_img'), 'assignedProfileImg'],
-        [Sequelize.col('assigned.first_name'), 'assignedFirstName'],
-        [Sequelize.col('assigned.last_name'), 'assignedLastName'],
-        [Sequelize.col('request.profile.name'), 'profileName'],
-        [Sequelize.col('request.employment_type'), 'requestEmploymentType'],
+        "id",
+        [Sequelize.col("assigned.profile_img"), "assignedProfileImg"],
+        [Sequelize.col("assigned.first_name"), "assignedFirstName"],
+        [Sequelize.col("assigned.last_name"), "assignedLastName"],
+        [Sequelize.col("request.profile.name"), "profileName"],
+        [Sequelize.col("request.employment_type"), "requestEmploymentType"],
       ],
       include: [
         {
@@ -110,16 +117,16 @@ export class AssignmentsRepository {
         },
         {
           model: RequestModel,
-          as: 'request',
+          as: "request",
           attributes: [],
           required: true,
           include: [
             {
               model: ProfileModel,
               attributes: [],
-              as: 'profile',
-            }
-          ]
+              as: "profile",
+            },
+          ],
         },
       ],
     });
@@ -127,15 +134,15 @@ export class AssignmentsRepository {
   async findByRequestId(id: string): Promise<AssignmentModel[] | null> {
     var resul = await AssignmentModel.findAll({
       where: {
-        status: 'assigned'
+        status: "assigned",
       },
       attributes: [
-        'id',
-        [Sequelize.col('assigned.profile_img'), 'assignedProfileImg'],
-        [Sequelize.col('assigned.first_name'), 'assignedFirstName'],
-        [Sequelize.col('assigned.last_name'), 'assignedLastName'],
-        [Sequelize.col('request.profile.name'), 'profileName'],
-        [Sequelize.col('request.employment_type'), 'requestEmploymentType'],
+        "id",
+        [Sequelize.col("assigned.profile_img"), "assignedProfileImg"],
+        [Sequelize.col("assigned.first_name"), "assignedFirstName"],
+        [Sequelize.col("assigned.last_name"), "assignedLastName"],
+        [Sequelize.col("request.profile.name"), "profileName"],
+        [Sequelize.col("request.employment_type"), "requestEmploymentType"],
       ],
       include: [
         {
@@ -146,19 +153,19 @@ export class AssignmentsRepository {
         },
         {
           model: RequestModel,
-          as: 'request',
+          as: "request",
           attributes: [],
           where: {
-            requesterId: id
+            requesterId: id,
           },
           required: true,
           include: [
             {
               model: ProfileModel,
               attributes: [],
-              as: 'profile',
-            }
-          ]
+              as: "profile",
+            },
+          ],
         },
       ],
     });

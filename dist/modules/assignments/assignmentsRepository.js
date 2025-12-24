@@ -55,13 +55,21 @@ class AssignmentsRepository {
                     attributes: { exclude: ["password"] },
                 },
                 {
-                    model: requestModel_1.default, include: [
+                    model: requestModel_1.default,
+                    include: [
                         {
-                            model: models_1.ProfileModel
-                        }
-                    ]
+                            model: models_1.ProfileModel,
+                            as: "profile",
+                        },
+                        {
+                            model: userModel_1.default,
+                            as: "requester",
+                            attributes: { exclude: ["password"] },
+                        },
+                    ],
                 },
             ],
+            distinct: true,
         });
         return { rows: result.rows, count: result.count };
     }
@@ -80,15 +88,15 @@ class AssignmentsRepository {
     async findBySub(subId) {
         return await assignmentModel_1.default.findOne({
             where: {
-                idSuscription: subId
+                idSuscription: subId,
             },
             attributes: [
-                'id',
-                [sequelize_1.Sequelize.col('assigned.profile_img'), 'assignedProfileImg'],
-                [sequelize_1.Sequelize.col('assigned.first_name'), 'assignedFirstName'],
-                [sequelize_1.Sequelize.col('assigned.last_name'), 'assignedLastName'],
-                [sequelize_1.Sequelize.col('request.profile.name'), 'profileName'],
-                [sequelize_1.Sequelize.col('request.employment_type'), 'requestEmploymentType'],
+                "id",
+                [sequelize_1.Sequelize.col("assigned.profile_img"), "assignedProfileImg"],
+                [sequelize_1.Sequelize.col("assigned.first_name"), "assignedFirstName"],
+                [sequelize_1.Sequelize.col("assigned.last_name"), "assignedLastName"],
+                [sequelize_1.Sequelize.col("request.profile.name"), "profileName"],
+                [sequelize_1.Sequelize.col("request.employment_type"), "requestEmploymentType"],
             ],
             include: [
                 {
@@ -98,16 +106,16 @@ class AssignmentsRepository {
                 },
                 {
                     model: requestModel_1.default,
-                    as: 'request',
+                    as: "request",
                     attributes: [],
                     required: true,
                     include: [
                         {
                             model: models_1.ProfileModel,
                             attributes: [],
-                            as: 'profile',
-                        }
-                    ]
+                            as: "profile",
+                        },
+                    ],
                 },
             ],
         });
@@ -115,15 +123,15 @@ class AssignmentsRepository {
     async findByRequestId(id) {
         var resul = await assignmentModel_1.default.findAll({
             where: {
-                status: 'assigned'
+                status: "assigned",
             },
             attributes: [
-                'id',
-                [sequelize_1.Sequelize.col('assigned.profile_img'), 'assignedProfileImg'],
-                [sequelize_1.Sequelize.col('assigned.first_name'), 'assignedFirstName'],
-                [sequelize_1.Sequelize.col('assigned.last_name'), 'assignedLastName'],
-                [sequelize_1.Sequelize.col('request.profile.name'), 'profileName'],
-                [sequelize_1.Sequelize.col('request.employment_type'), 'requestEmploymentType'],
+                "id",
+                [sequelize_1.Sequelize.col("assigned.profile_img"), "assignedProfileImg"],
+                [sequelize_1.Sequelize.col("assigned.first_name"), "assignedFirstName"],
+                [sequelize_1.Sequelize.col("assigned.last_name"), "assignedLastName"],
+                [sequelize_1.Sequelize.col("request.profile.name"), "profileName"],
+                [sequelize_1.Sequelize.col("request.employment_type"), "requestEmploymentType"],
             ],
             include: [
                 {
@@ -133,19 +141,19 @@ class AssignmentsRepository {
                 },
                 {
                     model: requestModel_1.default,
-                    as: 'request',
+                    as: "request",
                     attributes: [],
                     where: {
-                        requesterId: id
+                        requesterId: id,
                     },
                     required: true,
                     include: [
                         {
                             model: models_1.ProfileModel,
                             attributes: [],
-                            as: 'profile',
-                        }
-                    ]
+                            as: "profile",
+                        },
+                    ],
                 },
             ],
         });

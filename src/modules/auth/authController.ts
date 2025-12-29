@@ -16,7 +16,8 @@ export class AuthController {
 
   constructor() {
     this.authService = new AuthService();
-    this.userService = new UserService(); this.mandrill = new MailChimpService();
+    this.userService = new UserService();
+    this.mandrill = new MailChimpService();
   }
 
   register = async (req: Request, res: Response): Promise<void> => {
@@ -32,6 +33,7 @@ export class AuthController {
       }
 
       const result = await this.authService.register(validatedData, ip);
+      this.mandrill.sendRegisterSuccess(req.body.email, '', 'Proceso de registro éxitoso');
       res.status(201).json(result);
     } catch (error) {
       if (error instanceof ZodError) {

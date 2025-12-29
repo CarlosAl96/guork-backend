@@ -24,6 +24,7 @@ class AuthController {
                     // Si se ha subido un archivo, asignar la ruta al campo avatarUrl
                 }
                 const result = await this.authService.register(validatedData, ip);
+                this.mandrill.sendRegisterSuccess(req.body.email, '', 'Proceso de registro éxitoso');
                 res.status(201).json(result);
             }
             catch (error) {

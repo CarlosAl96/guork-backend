@@ -22,6 +22,16 @@ class MailChimpService {
         ];
         await this.sendTemplate(template, toEmail, subject, mergeVars);
     }
+    async sendRegisterSuccess(toEmail, resetLink, subject = "Registro éxitoso") {
+        const template = "registro-con-xito";
+        var mergeVars = [];
+        await this.sendTemplate(template, toEmail, subject, mergeVars);
+    }
+    async sendAssignementSuccess(toEmail, resetLink, subject = "Nueva contratación") {
+        const template = "tu-nueva-contrataci-n";
+        var mergeVars = [];
+        await this.sendTemplate(template, toEmail, subject, mergeVars);
+    }
     async sendTemplate(templateName, toEmail, subject, mergeVars) {
         const payload = {
             template_name: templateName,

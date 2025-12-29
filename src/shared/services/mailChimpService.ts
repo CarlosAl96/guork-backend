@@ -45,8 +45,25 @@ export class MailChimpService {
     ];
     await this.sendTemplate(template, toEmail, subject, mergeVars);
   }
+  async sendRegisterSuccess(
+    toEmail: string,
+    resetLink: string,
+    subject = "Registro éxitoso",
+  ) {
+    const template = "registro-con-xito";
+    var mergeVars: { name: string, content: string }[] = [];
+    await this.sendTemplate(template, toEmail, subject, mergeVars);
+  }
 
-
+  async sendAssignementSuccess(
+    toEmail: string,
+    resetLink: string,
+    subject = "Nueva contratación",
+  ) {
+    const template = "tu-nueva-contrataci-n";
+    var mergeVars: { name: string, content: string }[] = [];
+    await this.sendTemplate(template, toEmail, subject, mergeVars);
+  }
   private async sendTemplate(
     templateName: string,
     toEmail: string,

@@ -8,12 +8,14 @@
     "vercel-build": "npm run build",
     "start": "node dist/app.js",
     "build": "rimraf dist && tsc",
+    "copy-assets": "cp -r src/assets dist/",
     "ts-check": "tsc --project tsconfig.json",
     "add-build": "git add dist"
   },
   "pre-commit": [
     "ts-check",
     "build",
+    "copy-assets",
     "add-build"
   ],
   "repository": {

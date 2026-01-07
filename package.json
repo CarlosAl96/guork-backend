@@ -8,7 +8,7 @@
     "vercel-build": "npm run build",
     "start": "node dist/app.js",
     "build": "rimraf dist && tsc",
-    "copy-assets": "mkdir -p dist/modules/requests/template && cp src/modules/requests/template/invoice.ejs dist/modules/requests/template/",
+    "copy-assets": "cp -r src/assets dist/",
     "ts-check": "tsc --project tsconfig.json",
     "add-build": "git add dist"
   },
